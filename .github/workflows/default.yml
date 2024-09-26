@@ -20,7 +20,7 @@ jobs:
 
         for arch in x86_64 aarch64; do
           docker build --platform "${arch}" -t busybox:latest .
-          docker run --rm --platform "${arch}" -v $(pwd):/workdir busybox:latest cp /busybox/busybox "/workdir/dist/busybox-${arch}"
+          docker run --rm --platform "${arch}" -v $(pwd):/workdir busybox:latest cp /busybox-static-musl/busybox "/workdir/dist/busybox-${arch}"
         done
 
     - name: Set permissions for dist directory
