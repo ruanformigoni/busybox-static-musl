@@ -16,6 +16,8 @@ ENV LDFLAGS="-static"
 
 # Build
 RUN make defconfig
+RUN sed -i "s/CONFIG_SHA1_HWACCEL=y/CONFIG_SHA1_HWACCEL=n/" .config
+RUN sed -i "s/CONFIG_SHA256_HWACCEL=y/CONFIG_SHA256_HWACCEL=n/" .config
 RUN make -j"$(nproc)"
 
 # Strip
