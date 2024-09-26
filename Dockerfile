@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 # Requirements
-RUN apk add build-base linux-headers git
+RUN apk add build-base linux-headers git upx
 
 # Source
 RUN git clone https://github.com/mirror/busybox.git
@@ -12,4 +12,10 @@ ENV LDFLAGS="-static"
 
 # Build
 RUN make defconfig
-RUN make -j"$(nproc)"
+RUN make
+
+# Strip
+RUN strip -s -R .comment -R .gnu.version --strip-unneeded busybox
+
+# Compress
+RUN upx --ultra-brute --no-lzma busybox
