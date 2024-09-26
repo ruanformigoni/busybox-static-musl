@@ -1,18 +1,22 @@
 FROM alpine:latest
 
 # Requirements
-RUN apk add build-base linux-headers git upx
+RUN echo https://dl-cdn.alpinelinux.org/alpine/edge/main/ > /etc/apk/repositories
+RUN echo https://dl-cdn.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories
+RUN echo https://dl-cdn.alpinelinux.org/alpine/edge/testing/ >> /etc/apk/repositories
+RUN apk update && apk upgrade
+RUN apk add --no-cache build-base linux-headers git upx
 
 # Source
-RUN git clone https://github.com/mirror/busybox.git
-WORKDIR busybox
+RUN git clone https://github.com/ruanformigoni/busybox-static-musl.git
+WORKDIR busybox-static-musl
 
 # Static binary
 ENV LDFLAGS="-static"
 
 # Build
 RUN make defconfig
-RUN make
+RUN make -j"$(nproc)"
 
 # Strip
 RUN strip -s -R .comment -R .gnu.version --strip-unneeded busybox
