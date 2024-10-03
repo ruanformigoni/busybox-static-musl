@@ -24,4 +24,4 @@ RUN make -j"$(nproc)"
 RUN strip -s -R .comment -R .gnu.version --strip-unneeded busybox
 
 # Compress
-RUN upx --ultra-brute --no-lzma busybox
+# RUN upx --ultra-brute --no-lzma busybox
